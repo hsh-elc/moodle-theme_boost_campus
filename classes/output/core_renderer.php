@@ -509,4 +509,55 @@ class core_renderer extends \core_renderer {
         ORIGINAL END. */
         // @codingStandardsIgnoreEnd
     }
+
+    public function standard_after_main_region_html() {
+        // MODIFICATION START.
+        global $PAGE, $COURSE;
+        // MODIFICATION END.
+
+        $output = '';
+        $output .= \core_renderer::standard_after_main_region_html();
+
+        // MODIFICATION START.
+        if (($PAGE->context->get_course_context(false) == true && $COURSE->id != SITEID)
+            && get_config('theme_boost_campus', 'enablecourseeditbutton') == 'yes'
+            && has_capability('moodle/course:manageactivities', context_course::instance($COURSE->id))) {
+            $output .= $this->custom_edit_button($PAGE->url, 'post', true);
+        }
+        // MODIFICATION END.
+
+        return $output;
+    }
+
+    public function custom_edit_button(moodle_url $url, $method='post', $isFab=false, array $options=null) {
+        if (!($url instanceof moodle_url)) {
+            $url = new moodle_url($url);
+        }
+
+        $url->param('sesskey', sesskey());
+        if ($this->page->user_is_editing()) {
+            $url->param('edit', 'off');
+            $editstring = get_string('turneditingoff');
+        } else {
+            $url->param('edit', 'on');
+            $editstring = get_string('turneditingon');
+        }
+
+        $button = new single_button($url, $editstring, $method);
+
+        $button->class .= " edit-course-fab";
+        if($isFab) {
+            $button->class .= " btn-fab";
+        }
+
+        foreach ((array)$options as $key=>$value) {
+            if (property_exists($button, $key)) {
+                $button->$key = $value;
+            } else {
+                $button->set_attribute($key, $value);
+            }
+        }
+
+        return $this->render($button);
+    }
 }

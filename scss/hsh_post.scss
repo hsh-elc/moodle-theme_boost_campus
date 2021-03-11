@@ -1,0 +1,30 @@
+.edit-course-fab {
+  form {
+    margin: 0;
+  }
+}
+.singlebutton.btn-fab {
+  position: fixed;
+  bottom: 50px;
+  right: 70px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .7s ease 0s, visibility .1s ease .8s;
+  z-index: 1;
+
+  body.scrolled & {
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0s ease 0s, opacity .7s ease .1s;
+  }
+
+  .btn {
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 5px 8px 0 rgba(0,0,0,.14),0 1px 14px 0 rgba(0,0,0,.12);
+  }
+
+  @include media-breakpoint-down(sm) {
+    & {
+      bottom: 0;
+    }
+  }
+}

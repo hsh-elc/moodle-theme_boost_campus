@@ -872,4 +872,19 @@ if ($ADMIN->fulltree) {
 
     // Add tab to settings page.
     $settings->add($page);
+
+    // Custom Settings Tab
+    // Edit Course FAB
+    $name = 'theme_boost_campus_custom_settings';
+    $title = get_string('customsettingstabname', 'theme_boost_campus', null, true);
+    $page = new admin_settingpage($name, $title);
+
+    $name = 'theme_boost_campus/enablecourseeditbutton';
+    $title = get_string('enablecourseeditbutton','theme_boost_campus');
+    $description = get_string('enablecourseeditbutton_desc', 'theme_boost_campus');
+    $setting = new admin_setting_configcheckbox($name, $title, $description, 'no', 'yes', 'no' ); // Overriding default values
+    $page->add($setting);
+
+    // Add tab to settings page.
+    $settings->add($page);
 }
